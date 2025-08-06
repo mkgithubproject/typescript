@@ -132,5 +132,98 @@ let person: A & B = {
 | Functions  | Return & parameter types                           |
 
 ---
+Great! Let's now look at the **difference between `undefined` and `null` in JavaScript** (not just TypeScript).
 
-Would you like a **cheat sheet image** or a mini quiz to test your understanding?
+Even though TypeScript builds on JavaScript, JavaScript also has its own specific behavior for these two special values.
+
+---
+
+## ✅ In JavaScript: `undefined` vs `null`
+
+| Feature       | `undefined`                                                | `null`                                            |
+| ------------- | ---------------------------------------------------------- | ------------------------------------------------- |
+| **Meaning**   | A variable that has been declared but not assigned a value | A variable that is explicitly assigned “no value” |
+| **Set by?**   | JavaScript itself                                          | You (the developer)                               |
+| **Type**      | `"undefined"`                                              | `"object"` *(weird quirk)*                        |
+| **Use case**  | “Not yet defined”                                          | “Intentionally empty”                             |
+| **Common in** | Default return of unassigned variables or missing values   | Resetting object properties or clearing a value   |
+
+---
+
+## 🔍 Detailed Examples
+
+### ➤ `undefined` examples
+
+```js
+let a;
+console.log(a); // ➡️ undefined (variable declared, not assigned)
+
+function greet() {}
+console.log(greet()); // ➡️ undefined (no return value)
+
+let obj = {};
+console.log(obj.name); // ➡️ undefined (property doesn’t exist)
+```
+
+---
+
+### ➤ `null` examples
+
+```js
+let name = null;
+console.log(name); // ➡️ null (developer assigned “no value”)
+
+let user = { name: null };
+console.log(user.name); // ➡️ null (intentionally set to no value)
+```
+
+---
+
+## ⚖️ Comparing `undefined` vs `null`
+
+### 1. Loose equality (`==`)
+
+```js
+undefined == null // ✅ true (they're equal in value but not in type)
+```
+
+### 2. Strict equality (`===`)
+
+```js
+undefined === null // ❌ false (different types)
+```
+
+---
+
+## 🔍 Type Checking
+
+```js
+typeof undefined; // "undefined"
+typeof null;      // "object"  <-- historical JavaScript bug/quirk
+```
+
+Yes, `typeof null === "object"` is a known **JavaScript bug** from the early days of JS (not a TypeScript issue).
+
+---
+
+## 🧠 Simple Summary
+
+| Concept             | `undefined`         | `null`              |
+| ------------------- | ------------------- | ------------------- |
+| Default by JS       | ✅                   | ❌                   |
+| Manually assignable | ❌                   | ✅                   |
+| Means               | "Not assigned"      | "Intentional empty" |
+| Type                | `"undefined"`       | `"object"`          |
+| `==` comparison     | Equal (`true`)      | Equal (`true`)      |
+| `===` comparison    | Not equal (`false`) | Not equal (`false`) |
+
+---
+
+### ✅ Best Practice in JavaScript:
+
+* Use `undefined` when the value is **not provided**.
+* Use `null` when you want to **manually clear** or **empty** a variable.
+
+---
+
+
