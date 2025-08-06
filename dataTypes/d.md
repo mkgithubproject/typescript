@@ -410,7 +410,414 @@ TypeScript and JavaScript behave differently because of **how they handle global
 | JavaScript: Combined files, global `let`  | ✅ Yes  | SyntaxError — can't redeclare `let` in same scope |
 | JavaScript: Local `let` inside functions  | ❌ No   | No conflict in local scopes                       |
 | JavaScript: Using ES modules              | ❌ No   | Isolated module scopes, like TypeScript modules   |
+Here’s a **deep dive into TypeScript data types** with theory, examples, and use cases. This will give you a solid understanding of how TypeScript handles types and how you can use them to build robust, maintainable applications.
 
-Let me know if you want to test this live or need examples for modules or namespaces.
+---
+
+# ✅ **TypeScript Data Types – Theory + Examples**
+
+## 🔹 What are Data Types in TypeScript?
+
+Data types define **what kind of data** a variable can hold. TypeScript adds static typing to JavaScript, helping developers catch type-related bugs **during development** rather than at runtime.
+
+> 🎯 **Real-life analogy**: Just like you assign labels to boxes in a warehouse to know what's inside ("Books", "Electronics"), data types label your variables so you know what kind of value they should hold.
+
+---
+
+## 🧠 **Why Use Data Types in TypeScript?**
+
+| Benefits                    | Description                                              |
+| --------------------------- | -------------------------------------------------------- |
+| ✅ Early Error Detection     | Type errors are caught at compile time.                  |
+| ✅ Better IDE Support        | Autocomplete, IntelliSense, etc.                         |
+| ✅ Improved Code Readability | Easier to understand what kind of data a variable holds. |
+| ✅ Safer Refactoring         | Types make refactoring predictable.                      |
+| ✅ Documentation via Types   | Code is self-documenting.                                |
+
+---
+
+## 🧱 **Types in TypeScript**
+
+### 🔹 1. **Primitive Types**
+
+These are the basic data types built into the language.
+
+#### a. `number`
+
+Represents all numeric values including integers and floating-point numbers.
+
+```ts
+let age: number = 25;
+let price: number = 99.99;
+```
+
+**Real-life use case**: Tracking age, price, or quantity in a billing system.
+
+#### b. `string`
+
+Represents textual data.
+
+```ts
+let name: string = "John Doe";
+let greeting: string = `Hello, ${name}`;
+```
+
+**Use case**: Displaying names, product descriptions, etc.
+
+#### c. `boolean`
+
+Represents true or false values.
+
+```ts
+let isLoggedIn: boolean = true;
+```
+
+**Use case**: User login status, toggles, switches.
+
+#### d. `null` and `undefined`
+
+Represents absence of value or not initialized.
+
+```ts
+let x: null = null;
+let y: undefined = undefined;
+```
+
+> ✅ Tip: Use `strictNullChecks` in tsconfig to catch null-related bugs.
+
+#### e. `bigint`
+
+For arbitrarily large integers.
+
+```ts
+let big: bigint = 9007199254740991n;
+```
+
+**Use case**: Financial calculations with large numbers.
+
+#### f. `symbol`
+
+Represents unique identifiers.
+
+```ts
+let sym: symbol = Symbol("unique");
+```
+
+**Use case**: Keys in objects where you need uniqueness.
+
+---
+
+### 🔹 2. **Object Types**
+
+Used to define complex structures.
+
+#### a. `object`
+
+```ts
+let person: object = {
+  name: "Alice",
+  age: 30
+};
+```
+
+#### b. **Custom Types (Type Aliases)**
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+let user: User = {
+  name: "Bob",
+  age: 25
+};
+```
+
+**Use case**: Representing a user, employee, or product in an app.
+
+---
+
+### 🔹 3. **Array Types**
+
+Represents a list of elements.
+
+#### a. `number[]` or `Array<number>`
+
+```ts
+let numbers: number[] = [1, 2, 3];
+let names: Array<string> = ["Alice", "Bob"];
+```
+
+**Use case**: Cart items, user list, scores, etc.
+
+---
+
+### 🔹 4. **Tuple Types**
+
+Represents a fixed-size array with defined types.
+
+```ts
+let person: [string, number] = ["Alice", 30];
+```
+
+**Use case**: Key-value pairs like \[latitude, longitude].
+
+---
+
+### 🔹 5. **Enum Type**
+
+Gives names to constant values.
+
+```ts
+enum Direction {
+  Up,
+  Down,
+  Left,
+  Right
+}
+let move: Direction = Direction.Up;
+```
+
+> ⚠️ Prefer `const enum` for performance.
+
+**Use case**: Representing user roles, directions, status codes.
+
+---
+
+### 🔹 6. **Any Type**
+
+Disables type checking.
+
+```ts
+let data: any = 5;
+data = "Now a string";
+data = true;
+```
+
+**Use case**: Migrating from JS or working with unknown libraries.
+
+---
+
+### 🔹 7. **Unknown Type**
+
+A safer alternative to `any`.
+
+```ts
+let value: unknown = "hello";
+if (typeof value === "string") {
+  console.log(value.toUpperCase());
+}
+```
+
+**Use case**: Handling dynamic inputs or third-party API responses.
+
+---
+
+### 🔹 8. **Union Types (`|`)**
+
+Allows a variable to hold multiple types.
+
+```ts
+let id: number | string;
+id = 101;
+id = "E101";
+```
+
+**Use case**: Accepting both numeric and alphanumeric user IDs.
+
+---
+
+### 🔹 9. **Intersection Types (`&`)**
+
+Combines multiple types into one.
+
+```ts
+type Person = { name: string };
+type Employee = { id: number };
+type Staff = Person & Employee;
+const emp: Staff = {
+  name: "Alice",
+  id: 101
+};
+```
+
+**Use case**: Merging two interfaces like profile + role info.
+
+---
+
+### 🔹 10. **Literal Types**
+
+Restricts a variable to specific values.
+
+```ts
+let status: "success" | "error" | "loading";
+status = "success"; // ✅
+status = "failed";  // ❌ Error
+```
+
+**Use case**: Representing UI or API states.
+
+---
+
+### 🔹 11. **Function Types**
+
+Defines the shape of a function.
+
+#### a. With Parameter and Return Types
+
+```ts
+function add(x: number, y: number): number {
+  return x + y;
+}
+```
+
+#### b. Function as a Type
+
+```ts
+let greet: (name: string) => string;
+greet = function(name: string) {
+  return `Hello, ${name}`;
+};
+```
+
+**Use case**: Event handlers, callbacks.
+
+---
+
+### 🔹 12. **Void Type**
+
+Used for functions that don't return a value.
+
+```ts
+function logMessage(msg: string): void {
+  console.log(msg);
+}
+```
+
+**Use case**: Logging, status updates.
+
+---
+
+### 🔹 13. **Never Type**
+
+Used when a function never returns.
+
+```ts
+function throwError(msg: string): never {
+  throw new Error(msg);
+}
+```
+
+**Use case**: Error handling, infinite loops.
+
+---
+
+### 🔹 14. **Type Inference**
+
+TS can automatically assign a type.
+
+```ts
+let score = 100; // inferred as number
+```
+
+**Use case**: Decluttering code while maintaining safety.
+
+---
+
+### 🔹 15. **Type Assertion**
+
+Forcefully tell TypeScript the type.
+
+```ts
+let someValue: unknown = "hello";
+let strLength: number = (someValue as string).length;
+```
+
+**Use case**: When you're certain of the type, such as DOM manipulation.
+
+---
+
+### 🔹 16. **Optional and Default Parameters**
+
+```ts
+function greet(name: string, age?: number) {
+  console.log(`Hello ${name}`);
+}
+function multiply(a: number, b: number = 2): number {
+  return a * b;
+}
+```
+
+**Use case**: Optional user input fields, default configurations.
+
+---
+
+### 🔹 17. **Readonly Type**
+
+Prevents reassignment.
+
+```ts
+type User = {
+  readonly id: number;
+  name: string;
+};
+const user: User = { id: 1, name: "Alice" };
+user.id = 2; // ❌ Error
+```
+
+**Use case**: Enforcing immutability, such as IDs.
+
+---
+
+## ✅ Summary Table
+
+| Type       | Example                               |          |
+| ---------- | ------------------------------------- | -------- |
+| `number`   | `let x: number = 10;`                 |          |
+| `string`   | `let name: string = "Alice";`         |          |
+| `boolean`  | `let isOpen: boolean = true;`         |          |
+| `array`    | `let nums: number[] = [1, 2, 3];`     |          |
+| `tuple`    | `let data: [string, number]`          |          |
+| `enum`     | `enum Direction { Up, Down }`         |          |
+| `any`      | `let x: any = 5;`                     |          |
+| `unknown`  | `let x: unknown = "test";`            |          |
+| `union`    | \`let id: string                      | number\` |
+| `function` | `function greet(name: string): void`  |          |
+| `never`    | `function fail(): never { throw ...}` |          |
+| `literal`  | \`let status: "success"               | "fail"\` |
+
+---
+
+## 🧪 Real-World Example
+
+```ts
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  inStock: boolean;
+};
+
+function printProduct(product: Product): void {
+  console.log(`${product.name} - ₹${product.price}`);
+}
+
+const pen: Product = {
+  id: 1,
+  name: "Ball Pen",
+  price: 10,
+  inStock: true
+};
+
+printProduct(pen);
+```
+
+> 🛒 **Real-life scenario**: This `Product` type could represent an item in an e-commerce app where you display product details, price, and availability.
+
+---
+
+Would you like this in a **PDF note format** or want a **cheat sheet version** for revision?
+
 
 
